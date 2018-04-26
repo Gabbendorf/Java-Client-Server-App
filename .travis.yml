@@ -1,0 +1,5 @@
+language: java
+java version:
+  - "9.0.1"
+after_success:
+  - ./gradlew jacocoTestReport coveralls
