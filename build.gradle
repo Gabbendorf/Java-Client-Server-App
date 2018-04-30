@@ -1,12 +1,10 @@
-group 'EchoServer'
-version '1.0-SNAPSHOT'
-
 plugins {
     id 'jacoco'
     id 'com.github.kt3k.coveralls' version '2.6.3'
 }
 
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 9.0
 
@@ -24,3 +22,11 @@ jacocoTestReport {
         html.enabled = true
     }
 }
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'AppRunner'
+    }
+}
+
+mainClassName = 'AppRunner'
