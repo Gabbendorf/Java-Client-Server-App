@@ -16,12 +16,15 @@ public class Server {
         return serverSocket.accept();
     }
 
-    public String readTextFromClient(InputStream clientText) {
+    private BufferedReader saveTextFromClient(InputStream clientText) {
         InputStreamReader streamReader = new InputStreamReader(clientText);
-        BufferedReader bufferedReader = new BufferedReader(streamReader);
+        return new BufferedReader(streamReader);
+    }
+
+    public String readTextFromClient(InputStream clientText) {
         String text = "";
         try {
-            text = bufferedReader.readLine();
+            text = saveTextFromClient(clientText).readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
