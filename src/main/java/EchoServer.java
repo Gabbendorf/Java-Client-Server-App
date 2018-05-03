@@ -1,4 +1,4 @@
-import java.net.Socket;
+import java.io.IOException;
 
 public class EchoServer {
 
@@ -8,7 +8,17 @@ public class EchoServer {
         this.socket = socket;
     }
 
-    public Socket listenForConnection() {
-        return socket.acceptConnection();
+    public WritingSocket listenForConnection() {
+        return new ClientSideSocket(socket.acceptConnection());
+    }
+
+    public String readMessageFromClient(WritingSocket clientSocket) {
+        String message = "";
+        try {
+            message = socket.getStreamFromClient(clientSocket).readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return message;
     }
 }
