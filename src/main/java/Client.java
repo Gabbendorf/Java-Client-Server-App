@@ -1,13 +1,10 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class Client {
 
-    private final ClientSideSocket socket;
+    private final WritingSocket socket;
 
-    public Client(ClientSideSocket socket) {
+    public Client(WritingSocket socket) {
         this.socket = socket;
     }
 
@@ -23,5 +20,9 @@ public class Client {
             e.printStackTrace();
         }
         return userInput;
+    }
+
+    public void sendMessageToServer(String userInput) {
+        socket.writeToStream(userInput);
     }
 }
