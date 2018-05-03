@@ -21,7 +21,7 @@ public class ClientTest {
     public void newClient() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
-        clientSocket = new ClientSocketSpy();
+        clientSocket = new ClientSocketSpy("");
         client = new Client(clientSocket, consolePrinter);
     }
 
