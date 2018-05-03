@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
@@ -12,21 +11,33 @@ public class Server {
         this.serverSocket = serverSocket;
     }
 
-    public Socket listenForConnection() {
-        return serverSocket.accept();
+    public void run() {
+        System.out.println("--- Running echo server on port 8080 ---");
+        String clientText = readTextFromClient(listenForConnection());
+        System.out.println(String.format("[FROM Client] %s", clientText));
     }
 
-    private BufferedReader saveTextFromClient(InputStream clientText) {
-        InputStreamReader streamReader = new InputStreamReader(clientText);
+
+    public Socket listenForConnection() {
+        return serverSocket.acceptConnection();
+    }
+
+    private BufferedReader waitForStreamFromClient(Socket clientSocket) {
+        InputStreamReader streamReader = null;
+        try {
+            streamReader = new InputStreamReader(clientSocket.getInputStream());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return new BufferedReader(streamReader);
     }
 
-    public String readTextFromClient(InputStream clientText) {
+    public String readTextFromClient(Socket clientSocket) {
         String text = "";
         try {
-            text = saveTextFromClient(clientText).readLine();
+            text = waitForStreamFromClient(clientSocket).readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return text;
     }

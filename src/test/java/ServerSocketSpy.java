@@ -9,13 +9,13 @@ public class ServerSocketSpy implements ServerSideSocket {
        this.portNumber = portNumber;
     }
 
-    @Override
-    public Socket accept() {
-        wasCalled = true;
-        return new Socket();
-    }
-
     public boolean isListening() {
         return wasCalled;
+    }
+
+    @Override
+    public Socket acceptConnection() {
+        wasCalled = true;
+        return new Socket();
     }
 }

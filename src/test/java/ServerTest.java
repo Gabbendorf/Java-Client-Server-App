@@ -23,13 +23,4 @@ public class ServerTest {
 
         assertTrue(serverSocketDouble.isListening());
     }
-
-    @Test
-    public void readsTextReceivedFromClient() throws IOException {
-        ClientSocketStub clientSocket = new ClientSocketStub();
-
-        String clientText = server.readTextFromClient(clientSocket.inputStream("hello"));
-
-        assertEquals(clientText, "hello");
-    }
 }
