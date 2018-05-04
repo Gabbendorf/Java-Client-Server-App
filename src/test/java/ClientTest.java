@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
-    private ClientSocketSpy clientSocket;
+    private ClientSocketDouble clientSocket;
     private Client client;
     private ByteArrayOutputStream output;
     private ConsolePrinter consolePrinter;
@@ -23,7 +23,7 @@ public class ClientTest {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
         consoleReader = new ConsoleReader(input("hello"));
-        clientSocket = new ClientSocketSpy("");
+        clientSocket = new ClientSocketDouble("");
         client = new Client(clientSocket, consolePrinter, consoleReader);
     }
 

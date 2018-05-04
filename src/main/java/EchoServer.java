@@ -1,5 +1,3 @@
-import java.io.IOException;
-
 public class EchoServer {
 
     private final ReadingSocket socket;
@@ -15,13 +13,7 @@ public class EchoServer {
     }
 
     public String readMessageFromClient(WritingSocket clientSocket) {
-        String message = "";
-        try {
-            message = socket.getStreamFromClient(clientSocket).readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return message;
+        return socket.readStream(clientSocket);
     }
 
     public void printIsRunningMessage() {

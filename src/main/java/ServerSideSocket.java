@@ -23,9 +23,19 @@ public class ServerSideSocket implements ReadingSocket {
         return socket;
     }
 
-    @Override
-    public BufferedReader getStreamFromClient(WritingSocket clientSocket) {
+    private BufferedReader getStreamFromClient(WritingSocket clientSocket) {
         InputStreamReader streamReader = new InputStreamReader(clientSocket.writtenStream());
         return new BufferedReader(streamReader);
+    }
+
+    @Override
+    public String readStream(WritingSocket clientSocket) {
+        String clientMessage = "";
+        try {
+            clientMessage = getStreamFromClient(clientSocket).readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return clientMessage;
     }
 }

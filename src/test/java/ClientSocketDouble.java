@@ -2,12 +2,12 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
-public class ClientSocketSpy implements WritingSocket {
+public class ClientSocketDouble implements WritingSocket {
 
     private final String userInput;
     public boolean hasWrittenToOutputStream;
 
-    public ClientSocketSpy(String userInput) {
+    public ClientSocketDouble(String userInput) {
         this.hasWrittenToOutputStream = false;
         this.userInput = userInput;
     }

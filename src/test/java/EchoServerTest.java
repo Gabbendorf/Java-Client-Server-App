@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 public class EchoServerTest {
 
-    private ServerSocketDummy socket;
+    private ServerSocketDouble socket;
     private EchoServer server;
     private ByteArrayOutputStream output;
     private ConsolePrinter consolePrinter;
@@ -18,7 +18,7 @@ public class EchoServerTest {
     public void newServer() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
-        socket = new ServerSocketDummy();
+        socket = new ServerSocketDouble();
         server = new EchoServer(socket, consolePrinter);
     }
 
@@ -39,7 +39,7 @@ public class EchoServerTest {
     @Test
     public void readsMessageFromClient() {
         String userInputToWrite = "hello";
-        WritingSocket clientSocket = new ClientSocketSpy(userInputToWrite);
+        WritingSocket clientSocket = new ClientSocketDouble(userInputToWrite);
 
         String messageReceived = server.readMessageFromClient(clientSocket);
 
