@@ -29,6 +29,6 @@ public class EchoServer {
     }
 
     public void printClientMessage(String clientMessage) {
-        consolePrinter.printMessage(clientMessage);
+        consolePrinter.printMessageFromClient(clientMessage);
     }
 }

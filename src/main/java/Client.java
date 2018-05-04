@@ -4,28 +4,20 @@ public class Client {
 
     private final WritingSocket socket;
     private final ConsolePrinter consolePrinter;
+    private final ConsoleReader consoleReader;
 
-    public Client(WritingSocket socket, ConsolePrinter consolePrinter) {
+    public Client(WritingSocket socket, ConsolePrinter consolePrinter, ConsoleReader consoleReader) {
         this.socket = socket;
         this.consolePrinter = consolePrinter;
+        this.consoleReader = consoleReader;
     }
 
     public void printConnectionMessage() {
         consolePrinter.connectionMessage();
     }
 
-    private BufferedReader userInput(InputStream inputStream) {
-        return new BufferedReader(new InputStreamReader(inputStream));
-    }
-
     public String readUserInput(InputStream inputStream) {
-        String userInput;
-        try {
-            userInput = userInput(inputStream).readLine();
-        } catch (IOException error) {
-            return error.getMessage();
-        }
-        return userInput;
+        return consoleReader.readInput(inputStream);
     }
 
     public void sendMessageToServer(String userInput) {

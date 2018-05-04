@@ -16,13 +16,15 @@ public class ClientTest {
     private Client client;
     private ByteArrayOutputStream output;
     private ConsolePrinter consolePrinter;
+    private ConsoleReader consoleReader;
 
     @Before
     public void newClient() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
+        consoleReader = new ConsoleReader(input("hello"));
         clientSocket = new ClientSocketSpy("");
-        client = new Client(clientSocket, consolePrinter);
+        client = new Client(clientSocket, consolePrinter, consoleReader);
     }
 
     @Test
