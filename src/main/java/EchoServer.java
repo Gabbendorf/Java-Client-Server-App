@@ -3,9 +3,11 @@ import java.io.IOException;
 public class EchoServer {
 
     private final ReadingSocket socket;
+    private final ConsolePrinter consolePrinter;
 
-    public EchoServer(ReadingSocket socket) {
+    public EchoServer(ReadingSocket socket, ConsolePrinter consolePrinter) {
         this.socket = socket;
+        this.consolePrinter = consolePrinter;
     }
 
     public WritingSocket listenForConnection() {
@@ -20,5 +22,13 @@ public class EchoServer {
             e.printStackTrace();
         }
         return message;
+    }
+
+    public void printIsRunningMessage() {
+        consolePrinter.runningMessage();
+    }
+
+    public void printClientMessage(String clientMessage) {
+        consolePrinter.printMessage(clientMessage);
     }
 }

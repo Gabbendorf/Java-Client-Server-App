@@ -11,4 +11,12 @@ public class ConsolePrinter {
     public void connectionMessage() {
         output.println("Connected to chat server on port 8080:");
     }
+
+    public void runningMessage() {
+        output.println("Running chat server on port 8080:");
+    }
+
+    public void printMessage(String clientMessage) {
+        output.println(clientMessage);
+    }
 }
