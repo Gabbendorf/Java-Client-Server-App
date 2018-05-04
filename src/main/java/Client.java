@@ -17,7 +17,7 @@ public class Client {
     }
 
     public String readUserInput(InputStream inputStream) {
-        return consoleReader.readInput(inputStream);
+        return consoleReader.readUserInput(inputStream);
     }
 
     public void sendMessageToServer(String userInput) {

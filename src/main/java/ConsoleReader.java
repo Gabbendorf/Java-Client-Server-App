@@ -11,7 +11,7 @@ public class ConsoleReader {
         this.input = input;
     }
 
-    public String readInput(InputStream inputStream) {
+    public String readUserInput(InputStream inputStream) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String userInput = "";
         try {
