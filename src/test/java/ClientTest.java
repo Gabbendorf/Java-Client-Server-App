@@ -22,7 +22,7 @@ public class ClientTest {
     public void newClient() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
-        consoleReader = new ConsoleReader(input("hello"));
+        consoleReader = new ConsoleReader(input(""));
         clientSocket = new ClientSocketDouble("");
         client = new Client(clientSocket, consolePrinter, consoleReader);
     }
@@ -36,7 +36,11 @@ public class ClientTest {
 
     @Test
     public void readsInputFromUser() {
-        String userInput = client.readUserInput(input("hello"));
+        consoleReader = new ConsoleReader(input("hello"));
+        clientSocket = new ClientSocketDouble("");
+        client = new Client(clientSocket, consolePrinter, consoleReader);
+
+        String userInput = client.readUserInput();
 
         assertEquals(userInput, "hello");
     }
@@ -48,7 +52,7 @@ public class ClientTest {
         assertTrue(clientSocket.hasWrittenToOutputStream);
     }
 
-    private InputStream input(String userInput) {
-        return new ByteArrayInputStream(userInput.getBytes(StandardCharsets.UTF_8));
+    private InputStream input(String inputToRead) {
+        return new ByteArrayInputStream(inputToRead.getBytes(StandardCharsets.UTF_8));
     }
 }

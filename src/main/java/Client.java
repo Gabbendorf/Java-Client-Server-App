@@ -1,5 +1,3 @@
-import java.io.*;
-
 public class Client {
 
     private final WritingSocket socket;
@@ -16,8 +14,8 @@ public class Client {
         consolePrinter.connectionMessage();
     }
 
-    public String readUserInput(InputStream inputStream) {
-        return consoleReader.readUserInput(inputStream);
+    public String readUserInput() {
+        return consoleReader.readUserInput();
     }
 
     public void sendMessageToServer(String userInput) {
