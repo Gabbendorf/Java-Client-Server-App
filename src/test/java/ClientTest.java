@@ -31,7 +31,7 @@ public class ClientTest {
     public void printsMessageForSuccessfulConnection() {
         client.printConnectionMessage();
 
-        assertTrue(output.toString().contains("Connected to chat server on port 8080:"));
+        assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
 
     @Test

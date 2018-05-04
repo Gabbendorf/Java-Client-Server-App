@@ -26,7 +26,7 @@ public class EchoServerTest {
     public void printsMessageForSuccessfullyStartedToRun() {
         server.printIsRunningMessage();
 
-        assertTrue(output.toString().contains("Running chat server on port 8080:"));
+        assertTrue(output.toString().contains("Running echo server on port 8080:"));
     }
 
     @Test
