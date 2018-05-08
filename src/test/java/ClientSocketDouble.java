@@ -1,15 +1,15 @@
 public class ClientSocketDouble implements WritingSocket {
 
-    private final String userInput;
     public boolean hasWrittenToOutputStream;
+    public String messageToWrite;
 
-    public ClientSocketDouble(String userInput) {
+    public ClientSocketDouble() {
         this.hasWrittenToOutputStream = false;
-        this.userInput = userInput;
     }
 
     @Override
     public void writeToStream(String userInput) {
+        messageToWrite = userInput;
         hasWrittenToOutputStream = true;
     }
 }

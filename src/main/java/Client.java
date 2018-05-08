@@ -14,11 +14,7 @@ public class Client {
         consolePrinter.connectionMessage();
     }
 
-    public String readUserInput() {
-        return consoleReader.readUserInput();
-    }
-
-    public void sendMessageToServer(String userInput) {
-        socket.writeToStream(userInput);
+    public void sendMessageToServer() {
+        socket.writeToStream(consoleReader.readUserInput());
     }
 }
