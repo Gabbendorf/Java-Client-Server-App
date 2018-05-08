@@ -1,13 +1,12 @@
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class ClientSideSocket  implements WritingSocket {
+public class ClientSocket implements WritingSocket {
 
     private final Socket socket;
 
-    public ClientSideSocket(Socket socket) {
+    public ClientSocket(Socket socket) {
         this.socket = socket;
     }
 
@@ -20,16 +19,5 @@ public class ClientSideSocket  implements WritingSocket {
             e.printStackTrace();
         }
         writer.println(userInput);
-    }
-
-    @Override
-    public InputStream writtenStream() {
-        InputStream inputStream = null;
-        try {
-            inputStream = socket.getInputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return inputStream;
     }
 }

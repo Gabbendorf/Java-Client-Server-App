@@ -1,26 +1,18 @@
 public class EchoServer {
 
-    private final ReadingSocket socket;
+    private final AcceptingSocket socket;
     private final ConsolePrinter consolePrinter;
 
-    public EchoServer(ReadingSocket socket, ConsolePrinter consolePrinter) {
+    public EchoServer(AcceptingSocket socket, ConsolePrinter consolePrinter) {
         this.socket = socket;
         this.consolePrinter = consolePrinter;
     }
 
-    public WritingSocket listenForConnection() {
-        return new ClientSideSocket(socket.acceptConnection());
-    }
-
-    public String readMessageFromClient(WritingSocket clientSocket) {
-        return socket.readStream(clientSocket);
+    public ReadingSocket listenForConnection() {
+        return new CommunicatingServerSocket(socket.acceptConnection());
     }
 
     public void printIsRunningMessage() {
         consolePrinter.runningMessage();
-    }
-
-    public void printClientMessage(String clientMessage) {
-        consolePrinter.printMessageFromClient(clientMessage);
     }
 }
