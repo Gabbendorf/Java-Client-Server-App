@@ -10,12 +10,11 @@ public class CommunicatingServerTest {
 
     private CommunicatingServer server;
     private ByteArrayOutputStream output;
-    private ReadingSocket communicatingSocket;
 
     @Before
     public void newServer() {
         output = new ByteArrayOutputStream();
-        communicatingSocket = new CommunicatingServerSocketDouble("hello");
+        ReadingSocket communicatingSocket = new CommunicatingServerSocketDouble("hello");
         server = new CommunicatingServer(communicatingSocket, new ConsolePrinter(new PrintStream(output)));
     }
 

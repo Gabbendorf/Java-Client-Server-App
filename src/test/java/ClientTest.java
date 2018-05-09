@@ -22,14 +22,14 @@ public class ClientTest {
     public void newClient() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
-        consoleReader = new ConsoleReader(input("hello"));
+        consoleReader = new ConsoleReader(input(""));
         clientSocket = new ClientSocketDouble();
         client = new Client(clientSocket, consolePrinter, consoleReader);
     }
 
     @Test
     public void printsMessageForSuccessfulConnection() {
-        client.printConnectionMessage();
+        client.run();
 
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
@@ -39,10 +39,9 @@ public class ClientTest {
         ClientSocketDouble socket = new ClientSocketDouble();
         Client client = newClient(socket,"hello");
 
-        client.sendMessageToServer();
+        client.run();
 
-        assertEquals(socket.messageToWrite, "hello");
-        assertTrue(socket.hasWrittenToOutputStream);
+        assertEquals("hello\n", socket.writtenMessage());
     }
 
     private Client newClient(ClientSocketDouble socket, String messageToWrite) {

@@ -10,11 +10,16 @@ public class Client {
         this.consoleReader = consoleReader;
     }
 
-    public void printConnectionMessage() {
+    public void run() {
+        printConnectionMessage();
+        sendMessageToServer();
+    }
+
+    private void printConnectionMessage() {
         consolePrinter.connectionMessage();
     }
 
-    public void sendMessageToServer() {
+    private void sendMessageToServer() {
         socket.writeToStream(consoleReader.readUserInput());
     }
 }
