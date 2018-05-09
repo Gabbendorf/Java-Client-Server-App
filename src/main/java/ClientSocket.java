@@ -14,7 +14,7 @@ public class ClientSocket implements WritingSocket {
     public void writeToStream(String userInput) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(socket.getOutputStream());
+            writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
