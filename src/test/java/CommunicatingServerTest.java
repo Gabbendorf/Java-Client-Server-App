@@ -20,8 +20,15 @@ public class CommunicatingServerTest {
     }
 
     @Test
+    public void printsMessageForSuccessfulStart() {
+        server.run();
+
+        assertTrue(output.toString().contains("Running echo server on port 8080:"));
+    }
+
+    @Test
     public void printsMessageReceivedFromClientToUser() {
-        server.printClientMessage();
+        server.run();
 
         assertTrue(output.toString().contains("hello"));
     }

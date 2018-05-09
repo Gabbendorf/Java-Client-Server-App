@@ -8,11 +8,20 @@ public class CommunicatingServer {
         this.consolePrinter = consolePrinter;
     }
 
+    public void run() {
+        printIsRunningMessage();
+        printClientMessage();
+    }
+
+    private void printIsRunningMessage() {
+        consolePrinter.runningMessage();
+    }
+
     private String readMessageFromClient() {
         return socket.readStream();
     }
 
-    public void printClientMessage() {
+    private void printClientMessage() {
         consolePrinter.printMessageFromClient(readMessageFromClient());
     }
 }
