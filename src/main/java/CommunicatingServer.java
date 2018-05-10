@@ -9,24 +9,16 @@ public class CommunicatingServer {
     }
 
     public void run() {
-        printIsRunningMessage();
-        printClientMessage();
-    }
-
-    private void printIsRunningMessage() {
-        consolePrinter.runningMessage();
-    }
-
-    private String messageFromClient() {
-        return socket.readStream();
-    }
-
-    private void printClientMessage() {
+        consolePrinter.printServerIsRunning();
         String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
             consolePrinter.printMessageFromClient(clientMessage);
             clientMessage = messageFromClient();
         }
         socket.close();
+    }
+
+    private String messageFromClient() {
+        return socket.readStream();
     }
 }

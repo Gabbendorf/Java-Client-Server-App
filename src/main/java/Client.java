@@ -11,15 +11,7 @@ public class Client {
     }
 
     public void run() {
-        printConnectionMessage();
-        sendMessageToServer();
-    }
-
-    private void printConnectionMessage() {
-        consolePrinter.connectionMessage();
-    }
-
-    private void sendMessageToServer() {
+        consolePrinter.printClientHasConnectedToServer();
         String userInput = consoleReader.readUserInput();
         while (!userInput.equals("#quit")) {
             socket.writeToStream(userInput);
