@@ -17,15 +17,15 @@ public class CommunicatingServer {
         consolePrinter.runningMessage();
     }
 
-    private String readMessageFromClient() {
+    private String messageFromClient() {
         return socket.readStream();
     }
 
     private void printClientMessage() {
-        String clientMessage = readMessageFromClient();
+        String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
             consolePrinter.printMessageFromClient(clientMessage);
-            clientMessage = readMessageFromClient();
+            clientMessage = messageFromClient();
         }
         socket.close();
     }
