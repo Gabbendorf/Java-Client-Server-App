@@ -9,3 +9,6 @@
 * In your terminal session, start the server with `java -jar build/libs/EchoServer.jar server`
 * In another terminal session, connect the client to the server with `java -jar build/libs/EchoServer.jar client`
 * Enter something on the client terminal session and hit `enter`: the server will echo it!
+
+## Commands for the user
+`#quit` to the client: stops both the client and the server to run.
