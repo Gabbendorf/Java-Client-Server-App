@@ -12,19 +12,17 @@ import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
-    private ClientSocketDouble clientSocket;
+    private ClientSocketDouble socket;
     private Client client;
     private ByteArrayOutputStream output;
-    private ConsolePrinter consolePrinter;
-    private ConsoleReader consoleReader;
 
     @Before
     public void newClient() {
         output = new ByteArrayOutputStream();
-        consolePrinter = new ConsolePrinter(new PrintStream(output));
-        consoleReader = new ConsoleReader(input(""));
-        clientSocket = new ClientSocketDouble();
-        client = new Client(clientSocket, consolePrinter, consoleReader);
+        ConsolePrinter consolePrinter = new ConsolePrinter(new PrintStream(output));
+        StreamReader consoleReader = new ConsoleReaderDouble(input("hello\nhi\n#quit"));
+        socket = new ClientSocketDouble();
+        client = new Client(socket, consolePrinter, consoleReader);
     }
 
     @Test
@@ -35,19 +33,30 @@ public class ClientTest {
     }
 
     @Test
-    public void sendsMessageToTheServer() {
-        ClientSocketDouble socket = new ClientSocketDouble();
-        Client client = newClient(socket,"hello");
-
+    public void doesNotStopToSendMessagesToTheServer() {
         client.run();
 
-        assertEquals("hello\n", socket.writtenMessage());
+        String firstMessageWritten = socket.allMessagesWritten.get(0);
+        String secondMessageWritten = socket.allMessagesWritten.get(1);
+
+        assertEquals("hello\n", firstMessageWritten);
+        assertEquals("hi\n", secondMessageWritten);
     }
 
-    private Client newClient(ClientSocketDouble socket, String messageToWrite) {
-        consolePrinter = new ConsolePrinter(new PrintStream(new ByteArrayOutputStream()));
-        consoleReader = new ConsoleReader(input(messageToWrite));
-        return new Client(socket, consolePrinter, consoleReader);
+    @Test
+    public void sendsQuitMessageToServerToTellItToStop() {
+       client.run();
+
+       String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
+
+       assertEquals("quit\n", quitMessageWrittenToServer);
+    }
+
+    @Test
+    public void closesItsSocketWhenCommandedToQuit() {
+        client.run();
+
+        assertTrue(socket.isClosed);
     }
 
     private InputStream input(String inputToRead) {

@@ -20,4 +20,13 @@ public class ClientSocket implements WritingSocket {
         }
         writer.println(userInput);
     }
+
+    public void close() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
