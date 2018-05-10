@@ -32,4 +32,13 @@ public class CommunicatingServerSocket implements ReadingSocket {
         }
         return clientMessage;
     }
+
+    @Override
+    public void close() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

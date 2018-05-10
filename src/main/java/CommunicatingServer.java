@@ -22,6 +22,11 @@ public class CommunicatingServer {
     }
 
     private void printClientMessage() {
-        consolePrinter.printMessageFromClient(readMessageFromClient());
+        String clientMessage = readMessageFromClient();
+        while (!clientMessage.equals("#quit")) {
+            consolePrinter.printMessageFromClient(clientMessage);
+            clientMessage = readMessageFromClient();
+        }
+        socket.close();
     }
 }

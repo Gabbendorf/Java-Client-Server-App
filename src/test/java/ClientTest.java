@@ -49,7 +49,7 @@ public class ClientTest {
 
        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
 
-       assertEquals("quit\n", quitMessageWrittenToServer);
+       assertEquals("#quit\n", quitMessageWrittenToServer);
     }
 
     @Test

@@ -29,7 +29,7 @@ public class Client {
     }
 
     private void endConnection() {
-        socket.writeToStream("quit");
+        socket.writeToStream("#quit");
         socket.close();
     }
 }
