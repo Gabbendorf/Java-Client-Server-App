@@ -6,15 +6,16 @@ import java.util.List;
 public class CommunicatingServerSocketDouble implements ReadingSocket {
 
     private final List<String> messagesFromClient;
+    private final BufferedReader bufferedReader;
     public boolean isClosed;
 
     public CommunicatingServerSocketDouble(String streamFromClient) {
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream(streamFromClient)));
         this.messagesFromClient = allMessages(streamFromClient);
     }
 
     @Override
     public String readStream() {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream(message())));
         try {
             return bufferedReader.readLine();
         } catch (IOException e) {
@@ -26,12 +27,6 @@ public class CommunicatingServerSocketDouble implements ReadingSocket {
     @Override
     public void close() {
         isClosed = true;
-    }
-
-    private String message() {
-        String message = messagesFromClient.get(0);
-        messagesFromClient.remove(message);
-        return message;
     }
 
     private List<String> allMessages(String message) {

@@ -9,6 +9,7 @@ public class ConsoleReaderDouble implements StreamReader {
         this.input = new Scanner(inputStream);
     }
 
+    @Override
     public String readUserInput() {
         return input.nextLine();
     }
