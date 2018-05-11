@@ -1,6 +1,8 @@
 package server;
 
 import console.ConsolePrinter;
+import exceptions.ClosingSocketException;
+import exceptions.InputStreamException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +33,14 @@ public class CommunicatingServerTest {
         assertTrue(output.toString().contains("Running echo server on port 8080:"));
     }
 
+    @Test(expected = InputStreamException.class)
+    public void throwsInputStreamExceptionWhenItCannotReadStream() {
+        SocketWithInputStreamException socket = new SocketWithInputStreamException("hello\n#quit");
+        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
+
+        server.run();
+    }
+
     @Test
     public void printsEachMessageReceived() {
         FakeCommunicatingSocket socket = new FakeCommunicatingSocket("hello\nciao\n#quit");
@@ -41,6 +51,14 @@ public class CommunicatingServerTest {
         assertTrue(output.toString().contains("hello\nciao"));
     }
 
+    @Test(expected = ClosingSocketException.class)
+    public void throwsClosingSocketExceptionWhenItCannotCloseSocket() {
+        SocketWithClosingSocketException socket = new SocketWithClosingSocketException("hello\n#quit");
+        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
+
+        server.run();
+    }
+
     @Test
     public void stopsRunningIfToldToQuit() {
         FakeCommunicatingSocket socket = new FakeCommunicatingSocket("hello\nciao\n#quit");
@@ -49,5 +67,29 @@ public class CommunicatingServerTest {
         server.run();
 
         assertTrue(socket.isClosed);
+    }
+
+    private class SocketWithClosingSocketException extends FakeCommunicatingSocket {
+
+        public SocketWithClosingSocketException(String streamFromClient) {
+            super(streamFromClient);
+        }
+
+        @Override
+        public void close() {
+            throw new ClosingSocketException("message");
+        }
+    }
+
+    private class SocketWithInputStreamException extends FakeCommunicatingSocket {
+
+        public SocketWithInputStreamException(String streamFromClient) {
+            super(streamFromClient);
+        }
+
+        @Override
+        public String readStream() {
+            throw new InputStreamException("message");
+        }
     }
 }

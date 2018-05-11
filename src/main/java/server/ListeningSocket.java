@@ -1,5 +1,7 @@
 package server;
 
+import exceptions.ConnectionException;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,11 +15,11 @@ public class ListeningSocket implements AcceptingSocket {
     }
 
     public Socket acceptConnection() {
-        Socket socket = null;
+        Socket socket;
         try {
             socket = serverSocket.accept();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ConnectionException(e.getMessage());
         }
         return socket;
     }

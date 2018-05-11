@@ -1,5 +1,8 @@
 package server;
 
+import exceptions.ClosingSocketException;
+import exceptions.InputStreamException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,11 +17,11 @@ public class CommunicatingSocket implements ReadingSocket {
     }
 
     private BufferedReader getStreamFromClient() {
-        InputStreamReader streamReader = null;
+        InputStreamReader streamReader;
         try {
             streamReader = new InputStreamReader(socket.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InputStreamException(e.getMessage());
         }
         return new BufferedReader(streamReader);
 
@@ -26,11 +29,11 @@ public class CommunicatingSocket implements ReadingSocket {
 
     @Override
     public String readStream() {
-        String clientMessage = "";
+        String clientMessage;
         try {
             clientMessage = getStreamFromClient().readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InputStreamException(e.getMessage());
         }
         return clientMessage;
     }
@@ -40,7 +43,7 @@ public class CommunicatingSocket implements ReadingSocket {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ClosingSocketException(e.getMessage());
         }
     }
 }

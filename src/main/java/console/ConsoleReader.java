@@ -1,5 +1,7 @@
 package console;
 
+import exceptions.InputStreamException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,11 +17,11 @@ public class ConsoleReader implements StreamReader {
 
     public String readUserInput() {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
-        String userInput = "";
+        String userInput;
         try {
             userInput = bufferedReader.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new InputStreamException(e.getMessage());
         }
         return userInput;
     }

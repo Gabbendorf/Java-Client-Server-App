@@ -2,6 +2,7 @@ import client.Client;
 import client.ClientSocket;
 import console.ConsolePrinter;
 import console.ConsoleReader;
+import exceptions.ConnectionException;
 import server.AcceptingSocket;
 import server.CommunicatingServer;
 import server.EchoServer;
@@ -28,7 +29,7 @@ public class AppRunner {
 
                 communicatingServer.run();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ConnectionException(e.getMessage());
             }
         } else {
             try {
@@ -37,9 +38,9 @@ public class AppRunner {
 
                 client.run();
             } catch (ConnectException e) {
-                System.out.println(e.getMessage());
+                throw new ConnectionException(e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new ConnectionException(e.getMessage());
             }
         }
     }

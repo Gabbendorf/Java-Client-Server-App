@@ -2,14 +2,13 @@ package client;
 
 import console.ConsolePrinter;
 import console.FakeConsoleReader;
-import console.StreamReader;
+import exceptions.ClosingSocketException;
+import exceptions.InputStreamException;
+import exceptions.OutputStreamException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
@@ -20,12 +19,14 @@ public class ClientTest {
     private FakeClientSocket socket;
     private Client client;
     private ByteArrayOutputStream output;
+    private ConsolePrinter consolePrinter;
+    private FakeConsoleReader consoleReader;
 
     @Before
     public void newClient() {
         output = new ByteArrayOutputStream();
-        ConsolePrinter consolePrinter = new ConsolePrinter(new PrintStream(output));
-        StreamReader consoleReader = new FakeConsoleReader(input("hello\nhi\n#quit"));
+        consolePrinter = new ConsolePrinter(new PrintStream(output));
+        consoleReader = new FakeConsoleReader(input("hello\nhi\n#quit"));
         socket = new FakeClientSocket();
         client = new Client(socket, consolePrinter, consoleReader);
     }
@@ -35,6 +36,22 @@ public class ClientTest {
         client.run();
 
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
+    }
+
+    @Test(expected = InputStreamException.class)
+    public void throwsInputStreamExceptionWhenItCannotGetUserInput() {
+        ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
+        Client client = new Client(socket, consolePrinter, consoleReader);
+
+        client.run();
+    }
+
+    @Test(expected = OutputStreamException.class)
+    public void throwsOutputStreamExceptionWhenItCannotGetOutputStream() {
+        ClientSocketWithOutputStreamException socket = new ClientSocketWithOutputStreamException();
+        Client client = new Client(socket, consolePrinter, consoleReader);
+
+        client.run();
     }
 
     @Test
@@ -57,6 +74,14 @@ public class ClientTest {
        assertEquals("#quit\n", quitMessageWrittenToServer);
     }
 
+    @Test(expected = ClosingSocketException.class)
+    public void throwsClosingSocketExceptionWhenItCannotCloseSocket() {
+        ClientSocketWithClosingSocketException socket = new ClientSocketWithClosingSocketException();
+        Client client = new Client(socket, consolePrinter, consoleReader);
+
+        client.run();
+    }
+
     @Test
     public void closesItsSocketWhenCommandedToQuit() {
         client.run();
@@ -66,5 +91,33 @@ public class ClientTest {
 
     private InputStream input(String inputToRead) {
         return new ByteArrayInputStream(inputToRead.getBytes(StandardCharsets.UTF_8));
+    }
+
+    private class ClientSocketWithOutputStreamException extends FakeClientSocket {
+
+        @Override
+        public void writeToStream(String userInput) {
+            throw new OutputStreamException("message");
+        }
+    }
+
+    private class ClientSocketWithClosingSocketException extends FakeClientSocket {
+
+        @Override
+        public void close() {
+            throw new ClosingSocketException("message");
+        }
+    }
+
+    private class ConsoleReaderWithInputStreamException extends FakeConsoleReader {
+
+        public ConsoleReaderWithInputStreamException(InputStream inputStream) {
+            super(inputStream);
+        }
+
+        @Override
+        public String readUserInput() {
+            throw new InputStreamException("message");
+        }
     }
 }

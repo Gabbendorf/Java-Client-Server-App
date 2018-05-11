@@ -1,7 +1,10 @@
 package server;
 
+import exceptions.ConnectionException;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.net.Socket;
 
 import static org.junit.Assert.assertTrue;
 
@@ -16,6 +19,14 @@ public class EchoServerTest {
         server = new EchoServer(acceptingSocket);
     }
 
+    @Test(expected = ConnectionException.class)
+    public void throwsAcceptingSocketExceptionWhenItCannotAcceptConnection() {
+        SocketWithAcceptingSocketException socket = new SocketWithAcceptingSocketException();
+        EchoServer server = new EchoServer(socket);
+
+        server.listenForConnection();
+    }
+    
     @Test
     public void listensForConnection() {
         server.listenForConnection();
@@ -28,5 +39,13 @@ public class EchoServerTest {
         ReadingSocket communicatingSocket = server.listenForConnection();
 
         assertTrue(communicatingSocket instanceof CommunicatingSocket);
+    }
+
+    private class SocketWithAcceptingSocketException extends ListeningSocketSpy {
+
+       @Override
+       public Socket acceptConnection(){
+            throw new ConnectionException("message");
+       }
     }
 }

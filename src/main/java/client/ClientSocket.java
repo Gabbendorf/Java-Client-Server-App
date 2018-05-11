@@ -1,5 +1,8 @@
 package client;
 
+import exceptions.ClosingSocketException;
+import exceptions.OutputStreamException;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -14,11 +17,11 @@ public class ClientSocket implements WritingSocket {
 
     @Override
     public void writeToStream(String userInput) {
-        PrintWriter writer = null;
+        PrintWriter writer;
         try {
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new OutputStreamException(e.getMessage());
         }
         writer.println(userInput);
     }
@@ -27,7 +30,7 @@ public class ClientSocket implements WritingSocket {
         try {
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ClosingSocketException(e.getMessage());
         }
     }
 }
