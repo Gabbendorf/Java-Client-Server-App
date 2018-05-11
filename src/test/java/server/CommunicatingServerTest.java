@@ -32,7 +32,7 @@ public class CommunicatingServerTest {
     }
 
     @Test
-    public void printsEachMessageReceivedFromClientToUser() {
+    public void printsEachMessageReceived() {
         FakeCommunicatingServerSocket socket = new FakeCommunicatingServerSocket("hello\nciao\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
 
@@ -42,7 +42,7 @@ public class CommunicatingServerTest {
     }
 
     @Test
-    public void stopsRunningIfToldToQuitByClientViaStream() {
+    public void stopsRunningIfToldToQuit() {
         FakeCommunicatingServerSocket socket = new FakeCommunicatingServerSocket("hello\nciao\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
 

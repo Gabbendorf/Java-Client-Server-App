@@ -38,7 +38,7 @@ public class ClientTest {
     }
 
     @Test
-    public void doesNotStopToSendMessagesToTheServer() {
+    public void keepsWritingMessages() {
         client.run();
 
         String firstMessageWritten = socket.allMessagesWritten.get(0);
@@ -49,7 +49,7 @@ public class ClientTest {
     }
 
     @Test
-    public void sendsQuitMessageToServerToTellItToStop() {
+    public void writesQuitMessageToServer() {
        client.run();
 
        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);

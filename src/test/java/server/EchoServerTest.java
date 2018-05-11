@@ -17,14 +17,14 @@ public class EchoServerTest {
     }
 
     @Test
-    public void listensForConnectionWithClientSocket() {
+    public void listensForConnection() {
         server.listenForConnection();
 
         assertTrue(acceptingSocket.isListening);
     }
 
     @Test
-    public void uponAcceptanceCreatesASocketItUsesToReadFromClientWith() {
+    public void uponAcceptanceCreatesASocket() {
         ReadingSocket communicatingSocket = server.listenForConnection();
 
         assertTrue(communicatingSocket instanceof CommunicatingServerSocket);
