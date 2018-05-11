@@ -9,6 +9,6 @@ public class EchoServer {
     }
 
     public ReadingSocket listenForConnection() {
-        return new CommunicatingServerSocket(socket.acceptConnection());
+        return new CommunicatingSocket(socket.acceptConnection());
     }
 }

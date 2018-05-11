@@ -4,11 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class ListeningServerSocket implements AcceptingSocket {
+public class ListeningSocket implements AcceptingSocket {
 
     private final ServerSocket serverSocket;
 
-    public ListeningServerSocket(ServerSocket serverSocket) {
+    public ListeningSocket(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 

@@ -5,7 +5,7 @@ import console.ConsoleReader;
 import server.AcceptingSocket;
 import server.CommunicatingServer;
 import server.EchoServer;
-import server.ListeningServerSocket;
+import server.ListeningSocket;
 
 import java.io.IOException;
 import java.net.ConnectException;
@@ -22,7 +22,7 @@ public class AppRunner {
         String mode = args[0];
         if (mode.equals("server")) {
             try {
-                AcceptingSocket listeningSocket = new ListeningServerSocket(new ServerSocket(portNumber));
+                AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
                 EchoServer echoServer = new EchoServer(listeningSocket);
                 CommunicatingServer communicatingServer = new CommunicatingServer(echoServer.listenForConnection(), printer);
 

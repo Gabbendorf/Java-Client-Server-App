@@ -8,11 +8,11 @@ import static org.junit.Assert.assertTrue;
 public class EchoServerTest {
 
     private EchoServer server;
-    private ListeningServerSocketSpy acceptingSocket;
+    private ListeningSocketSpy acceptingSocket;
 
     @Before
     public void newServer() {
-        acceptingSocket = new ListeningServerSocketSpy();
+        acceptingSocket = new ListeningSocketSpy();
         server = new EchoServer(acceptingSocket);
     }
 
@@ -27,6 +27,6 @@ public class EchoServerTest {
     public void uponAcceptanceCreatesASocket() {
         ReadingSocket communicatingSocket = server.listenForConnection();
 
-        assertTrue(communicatingSocket instanceof CommunicatingServerSocket);
+        assertTrue(communicatingSocket instanceof CommunicatingSocket);
     }
 }

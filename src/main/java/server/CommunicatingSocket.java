@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-public class CommunicatingServerSocket implements ReadingSocket {
+public class CommunicatingSocket implements ReadingSocket {
 
     private final Socket socket;
 
-    public CommunicatingServerSocket(Socket socket) {
+    public CommunicatingSocket(Socket socket) {
         this.socket = socket;
     }
 
