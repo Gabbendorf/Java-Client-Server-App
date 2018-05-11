@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClientSocketDouble implements WritingSocket {
+public class FakeClientSocket implements WritingSocket {
 
     public boolean isClosed;
     public List<String> allMessagesWritten = new ArrayList<>();

@@ -5,13 +5,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommunicatingServerSocketDouble implements ReadingSocket {
+public class FakeCommunicatingServerSocket implements ReadingSocket {
 
     private final List<String> messagesFromClient;
     private final BufferedReader bufferedReader;
     public boolean isClosed;
 
-    public CommunicatingServerSocketDouble(String streamFromClient) {
+    public FakeCommunicatingServerSocket(String streamFromClient) {
         bufferedReader = new BufferedReader(new InputStreamReader(inputStream(streamFromClient)));
         this.messagesFromClient = allMessages(streamFromClient);
     }

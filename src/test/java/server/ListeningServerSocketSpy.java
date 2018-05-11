@@ -2,7 +2,7 @@ package server;
 
 import java.net.Socket;
 
-public class ListeningServerSocketDouble implements AcceptingSocket {
+public class ListeningServerSocketSpy implements AcceptingSocket {
 
     public boolean isListening;
 

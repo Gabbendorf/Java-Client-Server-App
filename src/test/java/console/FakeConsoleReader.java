@@ -3,11 +3,11 @@ package console;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class ConsoleReaderDouble implements StreamReader {
+public class FakeConsoleReader implements StreamReader {
 
     private final Scanner input;
 
-    public ConsoleReaderDouble(InputStream inputStream) {
+    public FakeConsoleReader(InputStream inputStream) {
         this.input = new Scanner(inputStream);
     }
 

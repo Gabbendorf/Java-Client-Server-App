@@ -12,13 +12,13 @@ import static org.junit.Assert.assertTrue;
 public class CommunicatingServerTest {
 
     private ByteArrayOutputStream output;
-    private CommunicatingServerSocketDouble socket;
+    private FakeCommunicatingServerSocket socket;
     private ConsolePrinter consolePrinter;
 
     @Before
     public void newServer() {
         output = new ByteArrayOutputStream();
-        socket = new CommunicatingServerSocketDouble("hello\nciao\n#quit");
+        socket = new FakeCommunicatingServerSocket("hello\nciao\n#quit");
         consolePrinter = new ConsolePrinter(new PrintStream(output));
     }
 
@@ -33,7 +33,7 @@ public class CommunicatingServerTest {
 
     @Test
     public void printsEachMessageReceivedFromClientToUser() {
-        CommunicatingServerSocketDouble socket = new CommunicatingServerSocketDouble("hello\nciao\n#quit");
+        FakeCommunicatingServerSocket socket = new FakeCommunicatingServerSocket("hello\nciao\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
 
         server.run();
@@ -43,7 +43,7 @@ public class CommunicatingServerTest {
 
     @Test
     public void stopsRunningIfToldToQuitByClientViaStream() {
-        CommunicatingServerSocketDouble socket = new CommunicatingServerSocketDouble("hello\nciao\n#quit");
+        FakeCommunicatingServerSocket socket = new FakeCommunicatingServerSocket("hello\nciao\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
 
         server.run();

@@ -1,7 +1,7 @@
 package client;
 
 import console.ConsolePrinter;
-import console.ConsoleReaderDouble;
+import console.FakeConsoleReader;
 import console.StreamReader;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
-    private ClientSocketDouble socket;
+    private FakeClientSocket socket;
     private Client client;
     private ByteArrayOutputStream output;
 
@@ -25,8 +25,8 @@ public class ClientTest {
     public void newClient() {
         output = new ByteArrayOutputStream();
         ConsolePrinter consolePrinter = new ConsolePrinter(new PrintStream(output));
-        StreamReader consoleReader = new ConsoleReaderDouble(input("hello\nhi\n#quit"));
-        socket = new ClientSocketDouble();
+        StreamReader consoleReader = new FakeConsoleReader(input("hello\nhi\n#quit"));
+        socket = new FakeClientSocket();
         client = new Client(socket, consolePrinter, consoleReader);
     }
 
