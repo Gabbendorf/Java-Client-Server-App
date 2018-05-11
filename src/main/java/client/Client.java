@@ -1,3 +1,8 @@
+package client;
+
+import console.ConsolePrinter;
+import console.StreamReader;
+
 public class Client {
 
     private final WritingSocket socket;

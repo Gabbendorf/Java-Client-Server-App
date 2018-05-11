@@ -1,3 +1,12 @@
+import client.Client;
+import client.ClientSocket;
+import console.ConsolePrinter;
+import console.ConsoleReader;
+import server.AcceptingSocket;
+import server.CommunicatingServer;
+import server.EchoServer;
+import server.ListeningServerSocket;
+
 import java.io.IOException;
 import java.net.ConnectException;
 import java.net.ServerSocket;

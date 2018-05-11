@@ -1,3 +1,8 @@
+package client;
+
+import console.ConsolePrinter;
+import console.ConsoleReaderDouble;
+import console.StreamReader;
 import org.junit.Before;
 import org.junit.Test;
 

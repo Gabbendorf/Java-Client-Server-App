@@ -1,3 +1,6 @@
+package server;
+
+import console.ConsolePrinter;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,3 +1,5 @@
+package server;
+
 public class EchoServer {
 
     private final AcceptingSocket socket;
