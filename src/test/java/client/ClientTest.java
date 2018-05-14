@@ -1,7 +1,7 @@
 package client;
 
 import console.ConsolePrinter;
-import console.FakeConsoleReader;
+import console.ConsoleReader;
 import exceptions.ClosingSocketException;
 import exceptions.InputStreamException;
 import exceptions.OutputStreamException;
@@ -20,13 +20,13 @@ public class ClientTest {
     private Client client;
     private ByteArrayOutputStream output;
     private ConsolePrinter consolePrinter;
-    private FakeConsoleReader consoleReader;
+    private ConsoleReader consoleReader;
 
     @Before
     public void newClient() {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
-        consoleReader = new FakeConsoleReader(input("hello\nhi\n#quit"));
+        consoleReader = new ConsoleReader(input("hello\nhi\n#quit"));
         socket = new FakeClientSocket();
         client = new Client(socket, consolePrinter, consoleReader);
     }
@@ -38,12 +38,31 @@ public class ClientTest {
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
 
+    @Test(expected = NullPointerException.class)
+    public void throwsNullPointerExceptionForNullInputStream() {
+        ConsoleReaderWithNullPointerException consoleReader = new ConsoleReaderWithNullPointerException(input(null));
+        Client client = new Client(socket, consolePrinter, consoleReader);
+
+        client.run();
+    }
+
     @Test(expected = InputStreamException.class)
     public void throwsInputStreamExceptionWhenItCannotGetUserInput() {
         ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
         Client client = new Client(socket, consolePrinter, consoleReader);
 
         client.run();
+    }
+
+    @Test
+    public void quitsSocketIfGetsNothingAsInput() {
+        ConsoleReader consoleReader = new ConsoleReader(input(""));
+        Client client = new Client(socket, consolePrinter, consoleReader);
+
+        client.run();
+
+        assertEquals(consoleReader.readUserInput(), "#quit");
+        assertTrue(socket.isClosed);
     }
 
     @Test(expected = OutputStreamException.class)
@@ -109,15 +128,27 @@ public class ClientTest {
         }
     }
 
-    private class ConsoleReaderWithInputStreamException extends FakeConsoleReader {
+    private class ConsoleReaderWithInputStreamException extends ConsoleReader {
 
-        public ConsoleReaderWithInputStreamException(InputStream inputStream) {
+        ConsoleReaderWithInputStreamException(InputStream inputStream) {
             super(inputStream);
         }
 
         @Override
         public String readUserInput() {
             throw new InputStreamException("message");
+        }
+    }
+
+    private class ConsoleReaderWithNullPointerException extends ConsoleReader {
+
+        public ConsoleReaderWithNullPointerException(InputStream input) {
+            super(input);
+        }
+
+        @Override
+        public InputStream checkedStream(InputStream inputStream) {
+            throw new NullPointerException();
         }
     }
 }

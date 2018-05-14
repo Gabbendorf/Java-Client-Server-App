@@ -7,22 +7,33 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class ConsoleReader implements StreamReader {
+public class ConsoleReader {
 
-    private final InputStream input;
+    private final BufferedReader bufferedReader;
 
-    public ConsoleReader(InputStream input) {
-        this.input = input;
+    public ConsoleReader(InputStream inputStream) {
+        bufferedReader = new BufferedReader(new InputStreamReader(checkedStream(inputStream)));
     }
 
     public String readUserInput() {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(input));
         String userInput;
         try {
             userInput = bufferedReader.readLine();
+            if (userInput == null) {
+                userInput = "#quit";
+            }
         } catch (IOException e) {
             throw new InputStreamException(e.getMessage());
         }
         return userInput;
+    }
+
+    public InputStream checkedStream(InputStream inputStream) {
+        try {
+           return inputStream;
+        } catch (NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

@@ -4,7 +4,7 @@ import java.net.Socket;
 
 public class ListeningSocketSpy implements AcceptingSocket {
 
-    public boolean isListening;
+    boolean isListening;
 
     @Override
     public Socket acceptConnection() {
