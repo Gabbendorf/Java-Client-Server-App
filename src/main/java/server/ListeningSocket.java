@@ -19,7 +19,7 @@ public class ListeningSocket implements AcceptingSocket {
         try {
             socket = serverSocket.accept();
         } catch (IOException e) {
-            throw new ConnectionException(e.getMessage());
+            throw new ConnectionException(e);
         }
         return socket;
     }

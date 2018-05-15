@@ -23,7 +23,7 @@ public class ConsoleReader {
                 userInput = "#quit";
             }
         } catch (IOException e) {
-            throw new InputStreamException(e.getMessage());
+            throw new InputStreamException(e);
         }
         return userInput;
     }

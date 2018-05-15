@@ -21,7 +21,7 @@ public class CommunicatingSocket implements ReadingSocket {
         try {
             streamReader = new InputStreamReader(socket.getInputStream());
         } catch (IOException e) {
-            throw new InputStreamException(e.getMessage());
+            throw new InputStreamException(e);
         }
         return new BufferedReader(streamReader);
 
@@ -33,7 +33,7 @@ public class CommunicatingSocket implements ReadingSocket {
         try {
             clientMessage = getStreamFromClient().readLine();
         } catch (IOException e) {
-            throw new InputStreamException(e.getMessage());
+            throw new InputStreamException(e);
         }
         return clientMessage;
     }
@@ -43,7 +43,7 @@ public class CommunicatingSocket implements ReadingSocket {
         try {
             socket.close();
         } catch (IOException e) {
-            throw new ClosingSocketException(e.getMessage());
+            throw new ClosingSocketException(e);
         }
     }
 }

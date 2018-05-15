@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
 
 import static org.junit.Assert.assertTrue;
@@ -77,7 +78,7 @@ public class CommunicatingServerTest {
 
         @Override
         public void close() {
-            throw new ClosingSocketException("message");
+            throw new ClosingSocketException(new IOException());
         }
     }
 
@@ -89,7 +90,7 @@ public class CommunicatingServerTest {
 
         @Override
         public String readStream() {
-            throw new InputStreamException("message");
+            throw new InputStreamException(new IOException());
         }
     }
 }

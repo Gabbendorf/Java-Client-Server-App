@@ -1,8 +1,10 @@
 package exceptions;
 
+import java.io.IOException;
+
 public class InputStreamException extends RuntimeException {
 
-    public InputStreamException(String message) {
-        super("Could not read stream: " + message);
+    public InputStreamException(IOException e) {
+        super("Could not read stream: " + e.getMessage(), e);
     }
 }

@@ -116,7 +116,7 @@ public class ClientTest {
 
         @Override
         public void writeToStream(String userInput) {
-            throw new OutputStreamException("message");
+            throw new OutputStreamException(new IOException());
         }
     }
 
@@ -124,7 +124,7 @@ public class ClientTest {
 
         @Override
         public void close() {
-            throw new ClosingSocketException("message");
+            throw new ClosingSocketException(new IOException());
         }
     }
 
@@ -136,7 +136,7 @@ public class ClientTest {
 
         @Override
         public String readUserInput() {
-            throw new InputStreamException("message");
+            throw new InputStreamException(new IOException());
         }
     }
 

@@ -9,7 +9,6 @@ import server.EchoServer;
 import server.ListeningSocket;
 
 import java.io.IOException;
-import java.net.ConnectException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -29,7 +28,7 @@ public class AppRunner {
 
                 communicatingServer.run();
             } catch (IOException e) {
-                throw new ConnectionException(e.getMessage());
+                throw new ConnectionException(e);
             }
         } else {
             try {
@@ -37,10 +36,8 @@ public class AppRunner {
                 Client client = new Client(new ClientSocket(socket), printer, reader);
 
                 client.run();
-            } catch (ConnectException e) {
-                throw new ConnectionException(e.getMessage());
             } catch (IOException e) {
-                throw new ConnectionException(e.getMessage());
+                throw new ConnectionException(e);
             }
         }
     }

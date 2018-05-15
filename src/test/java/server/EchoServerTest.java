@@ -4,6 +4,7 @@ import exceptions.ConnectionException;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.net.Socket;
 
 import static org.junit.Assert.assertTrue;
@@ -45,7 +46,7 @@ public class EchoServerTest {
 
        @Override
        public Socket acceptConnection(){
-            throw new ConnectionException("message");
+            throw new ConnectionException(new IOException());
        }
     }
 }

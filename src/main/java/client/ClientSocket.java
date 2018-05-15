@@ -21,7 +21,7 @@ public class ClientSocket implements WritingSocket {
         try {
             writer = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
-            throw new OutputStreamException(e.getMessage());
+            throw new OutputStreamException(e);
         }
         writer.println(userInput);
     }
@@ -30,7 +30,7 @@ public class ClientSocket implements WritingSocket {
         try {
             socket.close();
         } catch (IOException e) {
-            throw new ClosingSocketException(e.getMessage());
+            throw new ClosingSocketException(e);
         }
     }
 }
