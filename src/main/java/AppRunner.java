@@ -3,10 +3,8 @@ import client.ClientSocket;
 import console.ConsolePrinter;
 import console.ConsoleReader;
 import exceptions.ConnectionException;
-import server.AcceptingSocket;
-import server.CommunicatingServer;
-import server.EchoServer;
-import server.ListeningSocket;
+import server.*;
+import threads.ThreadsExecutor;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,29 +14,22 @@ public class AppRunner {
 
     private static int portNumber = 8080;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ConnectionException, IOException {
+        String mode = args[0];
         ConsolePrinter printer = new ConsolePrinter(System.out);
         ConsoleReader reader = new ConsoleReader(System.in);
-        String mode = args[0];
-        if (mode.equals("server")) {
-            try {
-                AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
-                EchoServer echoServer = new EchoServer(listeningSocket);
-                CommunicatingServer communicatingServer = new CommunicatingServer(echoServer.listenForConnection(), printer);
 
-                communicatingServer.run();
-            } catch (IOException e) {
-                throw new ConnectionException(e);
+        if (mode.equals("server")) {
+            AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
+            EchoServer echoServer = new EchoServer(listeningSocket, printer, new ThreadsExecutor());
+            while(true) {
+                echoServer.acceptSimultaneousConnectionsUpTo(5);
             }
         } else {
-            try {
-                Socket socket = new Socket("localhost", portNumber);
-                Client client = new Client(new ClientSocket(socket), printer, reader);
+            Socket socket = new Socket("localhost", portNumber);
+            Client client = new Client(new ClientSocket(socket), printer, reader);
 
-                client.run();
-            } catch (IOException e) {
-                throw new ConnectionException(e);
-            }
+            client.run();
         }
     }
 }
