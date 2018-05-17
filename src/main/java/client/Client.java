@@ -15,7 +15,7 @@ public class Client {
         this.consoleReader = consoleReader;
     }
 
-    public void run() {
+    public void connect() {
         consolePrinter.printClientHasConnectedToServer();
         String userInput = consoleReader.readUserInput();
         while (!userInput.equals("#quit")) {

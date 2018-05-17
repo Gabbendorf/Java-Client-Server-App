@@ -33,7 +33,7 @@ public class ClientTest {
 
     @Test
     public void printsMessageForSuccessfulConnection() {
-        client.run();
+        client.connect();
 
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
@@ -43,7 +43,7 @@ public class ClientTest {
         ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
         Client client = new Client(socket, consolePrinter, consoleReader);
 
-        client.run();
+        client.connect();
     }
 
     @Test
@@ -51,7 +51,7 @@ public class ClientTest {
         ConsoleReader consoleReader = new ConsoleReader(input(""));
         Client client = new Client(socket, consolePrinter, consoleReader);
 
-        client.run();
+        client.connect();
 
         assertEquals(consoleReader.readUserInput(), "#quit");
         assertTrue(socket.isClosed);
@@ -62,12 +62,12 @@ public class ClientTest {
         ClientSocketWithOutputStreamException socket = new ClientSocketWithOutputStreamException();
         Client client = new Client(socket, consolePrinter, consoleReader);
 
-        client.run();
+        client.connect();
     }
 
     @Test
     public void keepsWritingMessages() {
-        client.run();
+        client.connect();
 
         String firstMessageWritten = socket.allMessagesWritten.get(0);
         String secondMessageWritten = socket.allMessagesWritten.get(1);
@@ -78,7 +78,7 @@ public class ClientTest {
 
     @Test
     public void writesQuitMessageToServer() {
-       client.run();
+       client.connect();
 
        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
 
@@ -90,12 +90,12 @@ public class ClientTest {
         ClientSocketWithClosingSocketException socket = new ClientSocketWithClosingSocketException();
         Client client = new Client(socket, consolePrinter, consoleReader);
 
-        client.run();
+        client.connect();
     }
 
     @Test
     public void closesItsSocketWhenCommandedToQuit() {
-        client.run();
+        client.connect();
 
         assertTrue(socket.isClosed);
     }

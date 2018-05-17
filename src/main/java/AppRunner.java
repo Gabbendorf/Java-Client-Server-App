@@ -29,7 +29,7 @@ public class AppRunner {
             Socket socket = new Socket("localhost", portNumber);
             Client client = new Client(new ClientSocket(socket), printer, reader);
 
-            client.run();
+            client.connect();
         }
     }
 }
