@@ -1,10 +1,15 @@
+package client;
+
+import console.ConsolePrinter;
+import console.ConsoleReader;
+
 public class Client {
 
     private final WritingSocket socket;
     private final ConsolePrinter consolePrinter;
-    private final StreamReader consoleReader;
+    private final ConsoleReader consoleReader;
 
-    public Client(WritingSocket socket, ConsolePrinter consolePrinter, StreamReader consoleReader) {
+    public Client(WritingSocket socket, ConsolePrinter consolePrinter, ConsoleReader consoleReader) {
         this.socket = socket;
         this.consolePrinter = consolePrinter;
         this.consoleReader = consoleReader;

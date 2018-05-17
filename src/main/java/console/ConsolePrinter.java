@@ -1,3 +1,5 @@
+package console;
+
 import java.io.PrintStream;
 
 public class ConsolePrinter {

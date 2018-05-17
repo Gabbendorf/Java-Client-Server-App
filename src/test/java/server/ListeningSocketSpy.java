@@ -1,8 +1,10 @@
+package server;
+
 import java.net.Socket;
 
-public class ListeningServerSocketDouble implements AcceptingSocket {
+public class ListeningSocketSpy implements AcceptingSocket {
 
-    public boolean isListening;
+    boolean isListening;
 
     @Override
     public Socket acceptConnection() {

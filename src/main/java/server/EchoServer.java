@@ -1,3 +1,5 @@
+package server;
+
 public class EchoServer {
 
     private final AcceptingSocket socket;
@@ -7,6 +9,6 @@ public class EchoServer {
     }
 
     public ReadingSocket listenForConnection() {
-        return new CommunicatingServerSocket(socket.acceptConnection());
+        return new CommunicatingSocket(socket.acceptConnection());
     }
 }

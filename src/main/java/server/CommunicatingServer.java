@@ -1,3 +1,6 @@
+package server;
+import console.ConsolePrinter;
+
 public class CommunicatingServer {
 
     private final ReadingSocket socket;
