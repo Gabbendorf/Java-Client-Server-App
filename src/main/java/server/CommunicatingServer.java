@@ -1,7 +1,7 @@
 package server;
 import console.ConsolePrinter;
 
-public class CommunicatingServer {
+public class CommunicatingServer implements Runnable {
 
     private final ReadingSocket socket;
     private final ConsolePrinter consolePrinter;
@@ -11,6 +11,7 @@ public class CommunicatingServer {
         this.consolePrinter = consolePrinter;
     }
 
+    @Override
     public void run() {
         consolePrinter.printServerIsRunning();
         String clientMessage = messageFromClient();
