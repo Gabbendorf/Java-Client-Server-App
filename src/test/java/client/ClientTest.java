@@ -38,14 +38,6 @@ public class ClientTest {
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
 
-    @Test(expected = NullPointerException.class)
-    public void throwsNullPointerExceptionForNullInputStream() {
-        ConsoleReaderWithNullPointerException consoleReader = new ConsoleReaderWithNullPointerException(input(null));
-        Client client = new Client(socket, consolePrinter, consoleReader);
-
-        client.run();
-    }
-
     @Test(expected = InputStreamException.class)
     public void throwsInputStreamExceptionWhenItCannotGetUserInput() {
         ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
@@ -137,18 +129,6 @@ public class ClientTest {
         @Override
         public String readUserInput() {
             throw new InputStreamException(new IOException());
-        }
-    }
-
-    private class ConsoleReaderWithNullPointerException extends ConsoleReader {
-
-        public ConsoleReaderWithNullPointerException(InputStream input) {
-            super(input);
-        }
-
-        @Override
-        public InputStream checkedStream(InputStream inputStream) {
-            throw new NullPointerException();
         }
     }
 }

@@ -12,7 +12,7 @@ public class ConsoleReader {
     private final BufferedReader bufferedReader;
 
     public ConsoleReader(InputStream inputStream) {
-        bufferedReader = new BufferedReader(new InputStreamReader(checkedStream(inputStream)));
+        bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
     }
 
     public String readUserInput() {
@@ -26,14 +26,5 @@ public class ConsoleReader {
             throw new InputStreamException(e);
         }
         return userInput;
-    }
-
-    public InputStream checkedStream(InputStream inputStream) {
-        try {
-           return inputStream;
-        } catch (NullPointerException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
     }
 }
