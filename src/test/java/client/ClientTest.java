@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class ClientTest {
 
-    private FakeClientSocket socket;
+    private ClientSocketSpy socket;
     private Client client;
     private ByteArrayOutputStream output;
     private ConsolePrinter consolePrinter;
@@ -27,7 +27,7 @@ public class ClientTest {
         output = new ByteArrayOutputStream();
         consolePrinter = new ConsolePrinter(new PrintStream(output));
         consoleReader = new ConsoleReader(input("hello\nhi\n#quit"));
-        socket = new FakeClientSocket();
+        socket = new ClientSocketSpy();
         client = new Client(socket, consolePrinter, consoleReader);
     }
 
@@ -72,8 +72,8 @@ public class ClientTest {
         String firstMessageWritten = socket.allMessagesWritten.get(0);
         String secondMessageWritten = socket.allMessagesWritten.get(1);
 
-        assertEquals("hello\n", firstMessageWritten);
-        assertEquals("hi\n", secondMessageWritten);
+        assertEquals("hello", firstMessageWritten);
+        assertEquals("hi", secondMessageWritten);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ClientTest {
 
        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
 
-       assertEquals("#quit\n", quitMessageWrittenToServer);
+       assertEquals("#quit", quitMessageWrittenToServer);
     }
 
     @Test(expected = ClosingSocketException.class)
@@ -104,7 +104,7 @@ public class ClientTest {
         return new ByteArrayInputStream(inputToRead.getBytes(StandardCharsets.UTF_8));
     }
 
-    private class ClientSocketWithOutputStreamException extends FakeClientSocket {
+    private class ClientSocketWithOutputStreamException extends ClientSocketSpy {
 
         @Override
         public void writeToStream(String userInput) {
@@ -112,7 +112,7 @@ public class ClientTest {
         }
     }
 
-    private class ClientSocketWithClosingSocketException extends FakeClientSocket {
+    private class ClientSocketWithClosingSocketException extends ClientSocketSpy {
 
         @Override
         public void close() {
