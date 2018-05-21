@@ -18,11 +18,12 @@ public class EchoServerTest {
     private EchoServer server;
     private ConsolePrinter printer;
     private ThreadsExecutorSpy threadsExecutor;
+    private ByteArrayOutputStream output;
 
     @Before
     public void newServer() {
         ListeningSocketSpy acceptingSocket = new ListeningSocketSpy();
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        output = new ByteArrayOutputStream();
         printer = new ConsolePrinter(new PrintStream(output));
         threadsExecutor = new ThreadsExecutorSpy(printer);
         server = new EchoServer(acceptingSocket, printer, threadsExecutor);
@@ -34,6 +35,13 @@ public class EchoServerTest {
         EchoServer server = new EchoServer(socket, printer, threadsExecutor);
 
         server.acceptSimultaneousConnections(new ServerStatus());
+    }
+
+    @Test
+    public void printsMessageForSuccessfulStart() {
+        server.acceptSimultaneousConnections(new ServerStatusDouble());
+
+        assertTrue(output.toString().contains("Running echo server on port 8080:"));
     }
 
     @Test

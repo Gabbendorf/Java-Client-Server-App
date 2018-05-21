@@ -25,15 +25,6 @@ public class CommunicatingServerTest {
         consolePrinter = new ConsolePrinter(new PrintStream(output));
     }
 
-    @Test
-    public void printsMessageForSuccessfulStart() {
-        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
-
-        server.run();
-
-        assertTrue(output.toString().contains("Running echo server on port 8080:"));
-    }
-
     @Test(expected = InputStreamException.class)
     public void throwsInputStreamExceptionWhenItCannotReadStream() {
         SocketWithInputStreamException socket = new SocketWithInputStreamException("hello\n#quit");

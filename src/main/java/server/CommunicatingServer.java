@@ -13,7 +13,6 @@ public class CommunicatingServer implements Runnable {
 
     @Override
     public void run() {
-        consolePrinter.printServerIsRunning();
         String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
             consolePrinter.printMessageFromClient(clientMessage);

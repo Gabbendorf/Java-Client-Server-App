@@ -17,6 +17,7 @@ public class EchoServer {
     }
 
     public void acceptSimultaneousConnections(ServerStatus serverStatus) {
+        printer.printServerIsRunning();
         while(serverStatus.isRunning()) {
             threadsExecutor.execute(new CommunicatingServer(listenForConnection(), printer));
         }
