@@ -28,7 +28,7 @@ public class ClientTest {
         consolePrinter = new ConsolePrinter(new PrintStream(output));
         consoleReader = new ConsoleReader(input("hello\nhi\n#quit"));
         socket = new ClientSocketSpy();
-        client = new Client(socket, consolePrinter, consoleReader);
+        client = new Client(socket, consolePrinter, consoleReader, "gabi");
     }
 
     @Test
@@ -41,7 +41,7 @@ public class ClientTest {
     @Test(expected = InputStreamException.class)
     public void throwsInputStreamExceptionWhenItCannotGetUserInput() {
         ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
         client.connect();
     }
@@ -49,7 +49,7 @@ public class ClientTest {
     @Test
     public void quitsSocketIfGetsNothingAsInput() {
         ConsoleReader consoleReader = new ConsoleReader(input(""));
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
         client.connect();
 
@@ -60,44 +60,63 @@ public class ClientTest {
     @Test(expected = OutputStreamException.class)
     public void throwsOutputStreamExceptionWhenItCannotGetOutputStream() {
         ClientSocketWithOutputStreamException socket = new ClientSocketWithOutputStreamException();
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
         client.connect();
     }
 
     @Test
-    public void keepsWritingMessages() {
+    public void writesItsNameAsFirstThing() {
+        Client client = newClient("gabi", "hi\n#quit");
+
         client.connect();
 
-        String firstMessageWritten = socket.allMessagesWritten.get(0);
-        String secondMessageWritten = socket.allMessagesWritten.get(1);
+        String clientName = socket.allMessagesWritten.get(0);
+        assertEquals("gabi", clientName);
+    }
 
+    @Test
+    public void keepsWritingMessages() {
+        Client client = newClient("gabi", "hello\nhi\n#quit");
+
+        client.connect();
+
+        String firstMessageWritten = socket.allMessagesWritten.get(1);
+        String secondMessageWritten = socket.allMessagesWritten.get(2);
         assertEquals("hello", firstMessageWritten);
         assertEquals("hi", secondMessageWritten);
     }
 
     @Test
     public void writesQuitMessageToServer() {
-       client.connect();
+        Client client = newClient("gabi", "hi\n#quit");
 
-       String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
+        client.connect();
 
-       assertEquals("#quit", quitMessageWrittenToServer);
+        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
+        assertEquals("#quit", quitMessageWrittenToServer);
     }
 
     @Test(expected = ClosingSocketException.class)
     public void throwsClosingSocketExceptionWhenItCannotCloseSocket() {
         ClientSocketWithClosingSocketException socket = new ClientSocketWithClosingSocketException();
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
         client.connect();
     }
 
     @Test
     public void closesItsSocketWhenCommandedToQuit() {
+        Client client = newClient("gabi", "hi\n#quit");
+
         client.connect();
 
         assertTrue(socket.isClosed);
+    }
+
+    private Client newClient(String name, String inputToRead) {
+        ConsoleReader consoleReader = new ConsoleReader(input(inputToRead));
+        return new Client(socket, consolePrinter, consoleReader, name);
     }
 
     private InputStream input(String inputToRead) {

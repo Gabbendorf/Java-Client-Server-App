@@ -21,7 +21,7 @@ public class CommunicatingServerTest {
     @Before
     public void newServer() {
         output = new ByteArrayOutputStream();
-        socket = new FakeCommunicatingSocket("hello\nciao\n#quit");
+        socket = new FakeCommunicatingSocket("gabi\nhello\nciao\n#quit");
         consolePrinter = new ConsolePrinter(new PrintStream(output));
     }
 
@@ -34,13 +34,23 @@ public class CommunicatingServerTest {
     }
 
     @Test
-    public void printsEachMessageReceived() {
-        FakeCommunicatingSocket socket = new FakeCommunicatingSocket("hello\nciao\n#quit");
+    public void firstMessageReceivedIsClientName() {
+        FakeCommunicatingSocket socket = new FakeCommunicatingSocket("gabi\nhello\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
 
         server.run();
 
-        assertTrue(output.toString().contains("hello\nciao"));
+        assertTrue(output.toString().contains("[from gabi] hello"));
+    }
+
+    @Test
+    public void printsEachMessageReceived() {
+        FakeCommunicatingSocket socket = new FakeCommunicatingSocket("gabi\nciao\nhello\n#quit");
+        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
+
+        server.run();
+
+        assertTrue(output.toString().contains("[from gabi] ciao\n[from gabi] hello"));
     }
 
     @Test(expected = ClosingSocketException.class)
@@ -59,6 +69,16 @@ public class CommunicatingServerTest {
         server.run();
 
         assertTrue(socket.isClosed);
+    }
+
+    @Test
+    public void printsClientLeftMessageWhenQuits() {
+        FakeCommunicatingSocket socket = new FakeCommunicatingSocket("gabi\nciao\n#quit");
+        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
+
+        server.run();
+
+        assertTrue(output.toString().contains("[gabi left]"));
     }
 
     private class SocketWithClosingSocketException extends FakeCommunicatingSocket {

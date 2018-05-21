@@ -15,12 +15,12 @@ import java.util.concurrent.Executors;
 public class AppRunner {
 
     private static int portNumber = 8080;
+    private static ConsolePrinter printer = new ConsolePrinter(System.out);
+    private static ConsoleReader reader = new ConsoleReader(System.in);
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
     public static void main(String[] args) throws ConnectionException, IOException {
         String mode = args[0];
-        ConsolePrinter printer = new ConsolePrinter(System.out);
-        ConsoleReader reader = new ConsoleReader(System.in);
-        ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
         if (mode.equals("server")) {
             AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
@@ -29,7 +29,7 @@ public class AppRunner {
             echoServer.acceptSimultaneousConnections(new ServerStatus());
         } else {
             Socket socket = new Socket("localhost", portNumber);
-            Client client = new Client(new ClientSocket(socket), printer, reader);
+            Client client = new Client(new ClientSocket(socket), printer, reader, mode);
 
             client.connect();
         }

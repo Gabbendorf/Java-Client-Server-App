@@ -13,15 +13,25 @@ public class CommunicatingServer implements Runnable {
 
     @Override
     public void run() {
+        String clientName = getClientName();
         String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
-            consolePrinter.printMessageFromClient(clientMessage);
+            consolePrinter.printMessageFromClient(clientName, clientMessage);
             clientMessage = messageFromClient();
         }
-        socket.close();
+        endConnectionWith(clientName);
+    }
+
+    private String getClientName() {
+        return messageFromClient();
     }
 
     private String messageFromClient() {
         return socket.readStream();
+    }
+
+    private void endConnectionWith(String clientName) {
+        socket.close();
+        consolePrinter.clientLeftMessage(clientName);
     }
 }
