@@ -21,4 +21,5 @@ A client-server chat written in Java.
 * You can connect up to 10 clients simultaneously. The server will echo all their messages in order
 
 ### Commands for the user
-`#quit` from the client: stops both the client and the server from running.
+`#quit` from the client: stops the connection between the client and the server
+`Control-C` from the server: quits the server
