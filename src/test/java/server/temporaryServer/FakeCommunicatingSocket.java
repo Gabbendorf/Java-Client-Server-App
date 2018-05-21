@@ -1,4 +1,4 @@
-package server;
+package server.temporaryServer;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

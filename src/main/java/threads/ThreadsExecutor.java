@@ -1,6 +1,6 @@
 package threads;
 
-import server.CommunicatingServer;
+import server.temporaryServer.CommunicatingServer;
 
 import java.util.concurrent.ExecutorService;
 

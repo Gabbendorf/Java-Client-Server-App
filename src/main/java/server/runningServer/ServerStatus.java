@@ -1,4 +1,4 @@
-package server;
+package server.runningServer;
 
 public class ServerStatus {
 

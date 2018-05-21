@@ -1,8 +1,8 @@
 package threads;
 
 import console.ConsolePrinter;
-import server.CommunicatingServer;
-import server.FakeCommunicatingSocket;
+import server.temporaryServer.CommunicatingServer;
+import server.temporaryServer.FakeCommunicatingSocket;
 
 import java.util.ArrayList;
 import java.util.List;

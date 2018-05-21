@@ -1,4 +1,4 @@
-package server;
+package server.temporaryServer;
 import console.ConsolePrinter;
 
 public class CommunicatingServer implements Runnable {

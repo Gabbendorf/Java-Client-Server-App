@@ -3,7 +3,10 @@ import client.ClientSocket;
 import console.ConsolePrinter;
 import console.ConsoleReader;
 import exceptions.ConnectionException;
-import server.*;
+import server.runningServer.AcceptingSocket;
+import server.runningServer.EchoServer;
+import server.runningServer.ListeningSocket;
+import server.runningServer.ServerStatus;
 import threads.ThreadsExecutor;
 
 import java.io.IOException;

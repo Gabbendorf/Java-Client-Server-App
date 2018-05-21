@@ -1,9 +1,10 @@
-package server;
+package server.runningServer;
 
 import console.ConsolePrinter;
 import exceptions.ConnectionException;
 import org.junit.Before;
 import org.junit.Test;
+import server.temporaryServer.CommunicatingServer;
 import threads.ThreadsExecutorSpy;
 
 import java.io.ByteArrayOutputStream;

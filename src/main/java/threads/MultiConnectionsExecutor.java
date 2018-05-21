@@ -1,6 +1,6 @@
 package threads;
 
-import server.CommunicatingServer;
+import server.temporaryServer.CommunicatingServer;
 
 public interface MultiConnectionsExecutor {
     void execute(CommunicatingServer server);

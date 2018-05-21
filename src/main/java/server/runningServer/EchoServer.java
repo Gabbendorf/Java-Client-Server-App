@@ -1,6 +1,9 @@
-package server;
+package server.runningServer;
 
 import console.ConsolePrinter;
+import server.temporaryServer.CommunicatingServer;
+import server.temporaryServer.CommunicatingSocket;
+import server.temporaryServer.ReadingSocket;
 import threads.MultiConnectionsExecutor;
 
 public class EchoServer {
