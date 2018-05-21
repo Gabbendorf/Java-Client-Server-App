@@ -14,6 +14,7 @@ public class CommunicatingServer implements Runnable {
     @Override
     public void run() {
         String clientName = getClientName();
+        consolePrinter.confirmConnectionWithClient(clientName);
         String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
             consolePrinter.printMessageFromClient(clientName, clientMessage);

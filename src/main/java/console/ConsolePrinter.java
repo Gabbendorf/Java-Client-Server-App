@@ -23,6 +23,10 @@ public class ConsolePrinter {
     }
 
     public void clientLeftMessage(String clientName) {
-        output.println(String.format("[%s ", clientName) + "left]");
+        output.println(String.format("[%s has left]", clientName));
+    }
+
+    public void confirmConnectionWithClient(String clientName) {
+        output.println(String.format("[%s has connected]", clientName));
     }
 }

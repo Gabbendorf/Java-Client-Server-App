@@ -34,6 +34,16 @@ public class CommunicatingServerTest {
     }
 
     @Test
+    public void confirmsConnectionIsMade() {
+        FakeCommunicatingSocket socket = new FakeCommunicatingSocket("gabi\nhello\n#quit");
+        CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
+
+        server.run();
+
+        assertTrue(output.toString().contains("[gabi has connected]"));
+    }
+
+    @Test
     public void firstMessageReceivedIsClientName() {
         FakeCommunicatingSocket socket = new FakeCommunicatingSocket("gabi\nhello\n#quit");
         CommunicatingServer server = new CommunicatingServer(socket, consolePrinter);
@@ -78,7 +88,7 @@ public class CommunicatingServerTest {
 
         server.run();
 
-        assertTrue(output.toString().contains("[gabi left]"));
+        assertTrue(output.toString().contains("[gabi has left]"));
     }
 
     private class SocketWithClosingSocketException extends FakeCommunicatingSocket {
