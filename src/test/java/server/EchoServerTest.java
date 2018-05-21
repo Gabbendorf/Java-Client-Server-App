@@ -4,16 +4,13 @@ import console.ConsolePrinter;
 import exceptions.ConnectionException;
 import org.junit.Before;
 import org.junit.Test;
-import threads.MultiConnectionsExecutor;
+import threads.ThreadsExecutorSpy;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class EchoServerTest {
@@ -27,7 +24,7 @@ public class EchoServerTest {
         ListeningSocketSpy acceptingSocket = new ListeningSocketSpy();
         ByteArrayOutputStream output = new ByteArrayOutputStream();
         printer = new ConsolePrinter(new PrintStream(output));
-        threadsExecutor = new ThreadsExecutorSpy();
+        threadsExecutor = new ThreadsExecutorSpy(printer);
         server = new EchoServer(acceptingSocket, printer, threadsExecutor);
     }
 
@@ -36,12 +33,12 @@ public class EchoServerTest {
         SocketWithAcceptingSocketException socket = new SocketWithAcceptingSocketException();
         EchoServer server = new EchoServer(socket, printer, threadsExecutor);
 
-        server.acceptSimultaneousConnectionsUpTo(1);
+        server.acceptSimultaneousConnections(new ServerStatus());
     }
 
     @Test
-    public void runsCommunicatingServerForConnectionMade() {
-        server.acceptSimultaneousConnectionsUpTo(1);
+    public void createsCommunicatingServerForConnectionMade() {
+        server.acceptSimultaneousConnections(new ServerStatusDouble());
 
         Runnable communicatingServerRun = threadsExecutor.serversConnected.get(0);
 
@@ -49,12 +46,14 @@ public class EchoServerTest {
     }
 
     @Test
-    public void startsThreeConnectionsSimultaneously() {
-        server.acceptSimultaneousConnectionsUpTo(3);
+    public void startsMultipleConnectionsSimultaneously() {
+        server.acceptSimultaneousConnections(new ServerStatusDouble());
 
-        int serversConnectedNumber = threadsExecutor.serversConnected.size();
+        assertTrue(serversConnectedAreMoreThanOne());
+    }
 
-        assertEquals(3, serversConnectedNumber);
+    private boolean serversConnectedAreMoreThanOne() {
+        return threadsExecutor.serversConnected.size() > 1;
     }
 
     private class SocketWithAcceptingSocketException extends ListeningSocketSpy {
@@ -65,17 +64,17 @@ public class EchoServerTest {
        }
     }
 
-    private class ThreadsExecutorSpy implements MultiConnectionsExecutor {
+    private class ServerStatusDouble extends ServerStatus {
 
-        List<CommunicatingServer> serversConnected = new ArrayList<>();
+        private int connectionsMade = 0;
 
         @Override
-        public void execute(CommunicatingServer server, int threadsNumber) {
-            int i = 0;
-            while(i != threadsNumber) {
-                serversConnected.add(new CommunicatingServer(new FakeCommunicatingSocket("hi\n#quit"), printer));
-                i += 1;
+        public boolean isRunning() {
+            while (connectionsMade < 3) {
+                connectionsMade += 1;
+                return true;
             }
+            return false;
         }
     }
 }

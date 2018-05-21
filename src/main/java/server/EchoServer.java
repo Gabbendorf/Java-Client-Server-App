@@ -13,10 +13,13 @@ public class EchoServer {
         this.socket = socket;
         this.printer = printer;
         this.threadsExecutor = threadsExecutor;
+
     }
 
-    public void acceptSimultaneousConnectionsUpTo(int threadsNumber) {
-        threadsExecutor.execute(new CommunicatingServer(listenForConnection(), printer), threadsNumber);
+    public void acceptSimultaneousConnections(ServerStatus serverStatus) {
+        while(serverStatus.isRunning()) {
+            threadsExecutor.execute(new CommunicatingServer(listenForConnection(), printer));
+        }
     }
 
     private ReadingSocket listenForConnection() {

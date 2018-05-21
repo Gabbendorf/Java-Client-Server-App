@@ -3,5 +3,5 @@ package threads;
 import server.CommunicatingServer;
 
 public interface MultiConnectionsExecutor {
-    void execute(CommunicatingServer server, int threadsNumber);
+    void execute(CommunicatingServer server);
 }

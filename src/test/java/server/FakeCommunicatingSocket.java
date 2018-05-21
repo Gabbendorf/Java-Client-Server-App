@@ -8,7 +8,7 @@ public class FakeCommunicatingSocket implements ReadingSocket {
     private final BufferedReader bufferedReader;
     boolean isClosed;
 
-    FakeCommunicatingSocket(String streamFromClient) {
+    public FakeCommunicatingSocket(String streamFromClient) {
         bufferedReader = new BufferedReader(new InputStreamReader(inputStream(streamFromClient)));
     }
 
