@@ -39,14 +39,14 @@ public class EchoServerTest {
 
     @Test
     public void printsMessageForSuccessfulStart() {
-        server.acceptSimultaneousConnections(new ServerStatusDouble());
+        server.acceptSimultaneousConnections(new ServerStatusStub());
 
         assertTrue(output.toString().contains("Running echo server on port 8080:"));
     }
 
     @Test
     public void createsCommunicatingServerForConnectionMade() {
-        server.acceptSimultaneousConnections(new ServerStatusDouble());
+        server.acceptSimultaneousConnections(new ServerStatusStub());
 
         Runnable communicatingServerRun = threadsExecutor.serversConnected.get(0);
 
@@ -55,7 +55,7 @@ public class EchoServerTest {
 
     @Test
     public void startsMultipleConnectionsSimultaneously() {
-        server.acceptSimultaneousConnections(new ServerStatusDouble());
+        server.acceptSimultaneousConnections(new ServerStatusStub());
 
         assertTrue(serversConnectedAreMoreThanOne());
     }
@@ -72,7 +72,7 @@ public class EchoServerTest {
        }
     }
 
-    private class ServerStatusDouble extends ServerStatus {
+    private class ServerStatusStub extends ServerStatus {
 
         private int connectionsMade = 0;
 
