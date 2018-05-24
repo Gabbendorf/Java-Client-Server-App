@@ -1,4 +1,4 @@
-package server;
+package server.temporaryServer;
 
 public interface ReadingSocket {
 

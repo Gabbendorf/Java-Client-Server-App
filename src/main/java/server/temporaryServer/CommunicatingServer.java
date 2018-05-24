@@ -1,7 +1,7 @@
-package server;
+package server.temporaryServer;
 import console.ConsolePrinter;
 
-public class CommunicatingServer {
+public class CommunicatingServer implements Runnable {
 
     private final ReadingSocket socket;
     private final ConsolePrinter consolePrinter;
@@ -11,17 +11,28 @@ public class CommunicatingServer {
         this.consolePrinter = consolePrinter;
     }
 
+    @Override
     public void run() {
-        consolePrinter.printServerIsRunning();
+        String clientName = getClientName();
+        consolePrinter.confirmConnectionWithClient(clientName);
         String clientMessage = messageFromClient();
         while (!clientMessage.equals("#quit")) {
-            consolePrinter.printMessageFromClient(clientMessage);
+            consolePrinter.printMessageFromClient(clientName, clientMessage);
             clientMessage = messageFromClient();
         }
-        socket.close();
+        endConnectionWith(clientName);
+    }
+
+    private String getClientName() {
+        return messageFromClient();
     }
 
     private String messageFromClient() {
         return socket.readStream();
+    }
+
+    private void endConnectionWith(String clientName) {
+        socket.close();
+        consolePrinter.clientLeftMessage(clientName);
     }
 }

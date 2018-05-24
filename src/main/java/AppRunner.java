@@ -3,42 +3,38 @@ import client.ClientSocket;
 import console.ConsolePrinter;
 import console.ConsoleReader;
 import exceptions.ConnectionException;
-import server.AcceptingSocket;
-import server.CommunicatingServer;
-import server.EchoServer;
-import server.ListeningSocket;
+import server.runningServer.AcceptingSocket;
+import server.runningServer.EchoServer;
+import server.runningServer.ListeningSocket;
+import server.runningServer.ServerStatus;
+import threads.ThreadsExecutor;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class AppRunner {
 
     private static int portNumber = 8080;
+    private static ConsolePrinter printer = new ConsolePrinter(System.out);
+    private static ConsoleReader reader = new ConsoleReader(System.in);
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
-    public static void main(String[] args) {
-        ConsolePrinter printer = new ConsolePrinter(System.out);
-        ConsoleReader reader = new ConsoleReader(System.in);
+    public static void main(String[] args) throws ConnectionException, IOException {
         String mode = args[0];
+
         if (mode.equals("server")) {
-            try {
-                AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
-                EchoServer echoServer = new EchoServer(listeningSocket);
-                CommunicatingServer communicatingServer = new CommunicatingServer(echoServer.listenForConnection(), printer);
+            AcceptingSocket listeningSocket = new ListeningSocket(new ServerSocket(portNumber));
+            EchoServer echoServer = new EchoServer(listeningSocket, printer, new ThreadsExecutor(threadPool));
 
-                communicatingServer.run();
-            } catch (IOException e) {
-                throw new ConnectionException(e);
-            }
+            echoServer.acceptSimultaneousConnections(new ServerStatus());
         } else {
-            try {
-                Socket socket = new Socket("localhost", portNumber);
-                Client client = new Client(new ClientSocket(socket), printer, reader);
+            Socket socket = new Socket("localhost", portNumber);
+            Client client = new Client(new ClientSocket(socket), printer, reader, mode);
 
-                client.run();
-            } catch (IOException e) {
-                throw new ConnectionException(e);
-            }
+            client.connect();
         }
     }
 }

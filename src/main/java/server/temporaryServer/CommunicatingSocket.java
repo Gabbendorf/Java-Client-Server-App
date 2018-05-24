@@ -1,4 +1,4 @@
-package server;
+package server.temporaryServer;
 
 import exceptions.ClosingSocketException;
 import exceptions.InputStreamException;

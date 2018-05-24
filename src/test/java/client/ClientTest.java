@@ -28,12 +28,12 @@ public class ClientTest {
         consolePrinter = new ConsolePrinter(new PrintStream(output));
         consoleReader = new ConsoleReader(input("hello\nhi\n#quit"));
         socket = new ClientSocketSpy();
-        client = new Client(socket, consolePrinter, consoleReader);
+        client = new Client(socket, consolePrinter, consoleReader, "gabi");
     }
 
     @Test
     public void printsMessageForSuccessfulConnection() {
-        client.run();
+        client.connect();
 
         assertTrue(output.toString().contains("Connected to echo server on port 8080:"));
     }
@@ -41,17 +41,17 @@ public class ClientTest {
     @Test(expected = InputStreamException.class)
     public void throwsInputStreamExceptionWhenItCannotGetUserInput() {
         ConsoleReaderWithInputStreamException consoleReader = new ConsoleReaderWithInputStreamException(input("hi\n#quit"));
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
-        client.run();
+        client.connect();
     }
 
     @Test
     public void quitsSocketIfGetsNothingAsInput() {
         ConsoleReader consoleReader = new ConsoleReader(input(""));
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
-        client.run();
+        client.connect();
 
         assertEquals(consoleReader.readUserInput(), "#quit");
         assertTrue(socket.isClosed);
@@ -60,44 +60,63 @@ public class ClientTest {
     @Test(expected = OutputStreamException.class)
     public void throwsOutputStreamExceptionWhenItCannotGetOutputStream() {
         ClientSocketWithOutputStreamException socket = new ClientSocketWithOutputStreamException();
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
-        client.run();
+        client.connect();
+    }
+
+    @Test
+    public void writesItsNameAsFirstThing() {
+        Client client = newClient("gabi", "hi\n#quit");
+
+        client.connect();
+
+        String clientName = socket.allMessagesWritten.get(0);
+        assertEquals("gabi", clientName);
     }
 
     @Test
     public void keepsWritingMessages() {
-        client.run();
+        Client client = newClient("gabi", "hello\nhi\n#quit");
 
-        String firstMessageWritten = socket.allMessagesWritten.get(0);
-        String secondMessageWritten = socket.allMessagesWritten.get(1);
+        client.connect();
 
+        String firstMessageWritten = socket.allMessagesWritten.get(1);
+        String secondMessageWritten = socket.allMessagesWritten.get(2);
         assertEquals("hello", firstMessageWritten);
         assertEquals("hi", secondMessageWritten);
     }
 
     @Test
     public void writesQuitMessageToServer() {
-       client.run();
+        Client client = newClient("gabi", "hi\n#quit");
 
-       String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
+        client.connect();
 
-       assertEquals("#quit", quitMessageWrittenToServer);
+        String quitMessageWrittenToServer = socket.allMessagesWritten.get(2);
+        assertEquals("#quit", quitMessageWrittenToServer);
     }
 
     @Test(expected = ClosingSocketException.class)
     public void throwsClosingSocketExceptionWhenItCannotCloseSocket() {
         ClientSocketWithClosingSocketException socket = new ClientSocketWithClosingSocketException();
-        Client client = new Client(socket, consolePrinter, consoleReader);
+        Client client = new Client(socket, consolePrinter, consoleReader, "gabi");
 
-        client.run();
+        client.connect();
     }
 
     @Test
     public void closesItsSocketWhenCommandedToQuit() {
-        client.run();
+        Client client = newClient("gabi", "hi\n#quit");
+
+        client.connect();
 
         assertTrue(socket.isClosed);
+    }
+
+    private Client newClient(String name, String inputToRead) {
+        ConsoleReader consoleReader = new ConsoleReader(input(inputToRead));
+        return new Client(socket, consolePrinter, consoleReader, name);
     }
 
     private InputStream input(String inputToRead) {

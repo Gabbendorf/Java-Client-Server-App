@@ -1,4 +1,4 @@
-package server;
+package server.runningServer;
 
 import exceptions.ConnectionException;
 

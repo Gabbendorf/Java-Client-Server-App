@@ -18,7 +18,15 @@ public class ConsolePrinter {
         output.println("Running echo server on port 8080:");
     }
 
-    public void printMessageFromClient(String clientMessage) {
-        output.println(clientMessage);
+    public void printMessageFromClient(String clientName, String clientMessage) {
+        output.println(String.format("[from %s] %s", clientName, clientMessage));
+    }
+
+    public void clientLeftMessage(String clientName) {
+        output.println(String.format("[%s has left]", clientName));
+    }
+
+    public void confirmConnectionWithClient(String clientName) {
+        output.println(String.format("[%s has connected]", clientName));
     }
 }
